@@ -6,17 +6,23 @@
 		}
 	},
 	"sap.ui5": {
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "sap.viz.sample.Pie.i18n.i18n"
+				}
+			}
+		},
 		"rootView": {
 			"viewName": "sap.viz.sample.Pie.Pie",
 			"type": "XML",
 			"async": true
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "../../css/exploredStyle.css"
-				}
-			]
+			"css": [{
+				"uri": "/exploredStyle.css"
+			}]
 		},
 		"dependencies": {
 			"libs": {
