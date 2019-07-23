@@ -1,0 +1,182 @@
+{
+	"vizType": {
+		"values": ["pie", "donut"]
+	},
+	"paletteTypes": {
+		"neutralEnabled": true,
+		"vizProperties": [{
+			"plotArea": {
+				"dataPointStyle": {
+					"rules": [{
+							"dataContext": {
+								"Revenue": {
+									"min": 3000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticBadLight3"
+							},
+							"displayName": "Revenue > 3M"
+						}, {
+							"dataContext": {
+								"Revenue": {
+									"max": 3000000,
+									"min": 2000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticBadLight2"
+							},
+							"displayName": "Revenue > 2M"
+						}, {
+							"dataContext": {
+								"Revenue": {
+									"min": 1500000,
+									"max": 2000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticBadLight1"
+							},
+							"displayName": "Revenue > 1.5M"
+						}, {
+							"dataContext": {
+								"Revenue": {
+									"min": 1000000,
+									"max": 1500000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticBad"
+							},
+							"displayName": "Revenue < 1.5M"
+						},
+
+						{
+							"dataContext": {
+								"Revenue": {
+									"max": 1000000,
+									"min": 500000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticBadDark1"
+							},
+							"displayName": "Revenue > 0.5M"
+						}
+
+					],
+					"others": {
+						"properties": {
+							"color": "sapUiChartPaletteSemanticBadDark2"
+						},
+						"displayName": "Revenue < 0.5M"
+					}
+				}
+			}
+		}, {
+			"plotArea": {
+				"dataPointStyle": {
+					"rules": [{
+							"dataContext": {
+								"Revenue": {
+									"min": 3000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticNeutralLight3"
+							},
+							"displayName": "Revenue > 3M"
+						},
+
+						{
+							"dataContext": {
+								"Revenue": {
+									"max": 3000000,
+									"min": 2000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticNeutralLight2"
+							},
+							"displayName": "Revenue > 2M"
+						}, {
+							"dataContext": {
+								"Revenue": {
+									"min": 1500000,
+									"max": 2000000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticNeutralLight1"
+							},
+							"displayName": "Revenue > 1.5M"
+						},
+
+						{
+							"dataContext": {
+								"Revenue": {
+									"min": 1000000,
+									"max": 1500000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticNeutral"
+							},
+							"displayName": "Revenue < 1.5M"
+						},
+
+						{
+							"dataContext": {
+								"Revenue": {
+									"max": 1000000,
+									"min": 500000
+								}
+							},
+							"properties": {
+								"color": "sapUiChartPaletteSemanticNeutralDark1"
+							},
+							"displayName": "Revenue > 0.5M"
+						}
+
+					],
+
+					"others": {
+						"properties": {
+							"color": "sapUiChartPaletteSemanticNeutralDark2"
+						},
+						"displayName": "Revenue < 0.5M"
+					}
+				}
+			}
+
+		}]
+	},
+
+	"dataset": {
+		"defaultSelected": 1,
+		"values": [{
+			"name": "Small",
+			"value": "/small.json"
+		}, {
+			"name": "Medium",
+			"value": "/medium.json"
+		}]
+	},
+	"series": {
+		"defaultSelected": 0,
+		"enabled": false,
+		"values": [{
+			"name": "1 Series"
+		}, {
+			"name": "2 Series"
+		}]
+	},
+	"dataLabel": {
+		"defaultState": false
+	},
+	"axisTitle": {
+		"defaultState": false,
+		"enabled": false
+	}
+}

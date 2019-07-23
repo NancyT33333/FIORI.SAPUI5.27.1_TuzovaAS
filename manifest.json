@@ -7,6 +7,11 @@
 	},
 	"sap.ui5": {
 		"models": {
+			"": {
+			
+				"uri": "/settings.json",
+				"type": "sap.ui.model.json.JSONModel"
+			},
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {

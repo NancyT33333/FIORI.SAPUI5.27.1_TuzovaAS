@@ -42,7 +42,7 @@
 								</VBox>
 								<VBox class='settingsBox'>
 									<Label text='{i18n>switchSemantic}'  design="Bold" class='settingsLabel'></Label>
-									<Switch id='paletteSwitch' change="handleStchChange" class='settingsSwitch' state="{/paletteTypes/semanticNeutral}">
+									<Switch id='paletteSwitch' change="handleStchChange" class='settingsSwitch' state="{/paletteTypes/neutralEnabled}">
 										<layoutData>
 											<FlexItemData growFactor="1"/>
 										</layoutData>

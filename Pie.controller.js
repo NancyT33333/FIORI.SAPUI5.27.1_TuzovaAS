@@ -12,70 +12,11 @@ sap.ui.define([
 
 		dataPath: "test-resources/sap/viz/demokit/dataset/milk_production_testing_data/revenue_cost_consume",
 
-		settingsModel: {
-			vizType: {
-				values: ["pie", "donut"]
-			},
-			paletteTypes: {
-				semanticNeutral: true,
-				vizProperties: [{
-					plotArea: {
-						dataPointStyle: {
-							"rules": [{
-								"dataContext": {"Revenue": {"max": 1932991.59}},
-								"properties": {
-									"color": "sapUiChartPaletteSemanticBad"
-								},
-								"displayName": "Revenue < 1.9M"
-							}],
-							"others": {
-								"properties": {
-									"color": "sapUiChartPaletteSemanticGood"
-								},
-								"displayName": "Revenue > 1.9M"
-							}
-						}
-					}
-				}]
-			},
-
-			dataset: {
-				defaultSelected: 1,
-				values: [{
-					name: "Small",
-					value: "/small.json"
-				}, {
-					name: "Medium",
-					value: "/medium.json"
-				}]
-			},
-			series: {
-				defaultSelected: 0,
-				enabled: false,
-				values: [{
-					name: "1 Series"
-				}, {
-					name: '2 Series'
-				}]
-			},
-			dataLabel: {
-				defaultState: false
-			},
-			axisTitle: {
-				defaultState: false,
-				enabled: false
-			}
-		},
-
 		oVizFrame: null,
 
 		onInit: function (evt) {
+			
 			Format.numericFormatter(ChartFormatter.getInstance());
-			// set explored app's demo model on this sample
-			var oModel = new JSONModel(this.settingsModel);
-		//	oModel.setDefaultBindingMode(BindingMode.OneWay);
-			this.getView().setModel(oModel);
-
 			var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame");
 			oVizFrame.setVizProperties({
 				legend: {
@@ -87,6 +28,8 @@ sap.ui.define([
 					visible: false
 				}
 			});
+			// apply Semantic Bad pallete rules
+			oVizFrame.setVizProperties(this.getView().getModel().getProperty("/paletteTypes/vizProperties")[1]);
 			var dataModel = new JSONModel(this.dataPath + "/medium.json");
 			oVizFrame.setModel(dataModel);
 
@@ -95,7 +38,7 @@ sap.ui.define([
 			oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
 
 			InitPageUtil.initPageSettings(this.getView());
-
+			
 			var that = this;
 			dataModel.attachRequestCompleted(function () {
 				that.dataSort(this.getData());
@@ -109,15 +52,14 @@ sap.ui.define([
 
 		handleStchChange: function () {
 			var oVizProperties;
-			var bNeutral = this.getView().getModel().getProperty("/paletteTypes/semanticNeutral");
+			var bNeutral = this.getView().getModel().getProperty("/paletteTypes/neutralEnabled");
 			switch (bNeutral) {
 				case true:
 					oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[1];
-			
 					break;
 				case false:
 					oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[0];
-				
+				break;
 			} 
 			this.oVizFrame.setVizProperties(oVizProperties);
 		},
@@ -132,15 +74,18 @@ sap.ui.define([
 			}
 		},
 		onAfterRendering: function () {
+			var oModel = this.getView().getModel();
 			var datasetRadioGroup = this.getView().byId('datasetRadioGroup');
-			datasetRadioGroup.setSelectedIndex(this.settingsModel.dataset.defaultSelected);
+			datasetRadioGroup.setSelectedIndex(oModel.getProperty("/dataset/defaultSelected"));
+			
 
 			var seriesRadioGroup = this.getView().byId('seriesRadioGroup');
-			seriesRadioGroup.setSelectedIndex(this.settingsModel.series.defaultSelected);
-			seriesRadioGroup.setEnabled(this.settingsModel.series.enabled);
+			seriesRadioGroup.setSelectedIndex(oModel.getProperty("/series/defaultSelected"));
+			seriesRadioGroup.setEnabled(oModel.getProperty("/series/enabled"));
 
 			var axisTitleSwitch = this.getView().byId('axisTitleSwitch');
-			axisTitleSwitch.setEnabled(this.settingsModel.axisTitle.enabled);
+			axisTitleSwitch.setEnabled(oModel.getProperty("/axisTitle/enabled")); 
+			
 		},
 		onDataLabelChanged: function (oEvent) {
 			if (this.oVizFrame) {
