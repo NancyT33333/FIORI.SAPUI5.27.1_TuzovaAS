@@ -61,7 +61,7 @@
 					</Panel>
 				</layout:fixContent>
 				<layout:flexContent>
-					<viz:Popover id="idPopOver"></viz:Popover>
+					<!--<viz:Popover id="idPopOver"></viz:Popover>-->
 					<viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height='100%' width="100%" vizType='pie'>
 						<viz:dataset>
 							<viz.data:FlattenedDataset data="{/milk}">

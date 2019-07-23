@@ -4,21 +4,23 @@ sap.ui.define([
 	'sap/ui/model/json/JSONModel',
 	'sap/viz/ui5/format/ChartFormatter',
 	'sap/viz/ui5/api/env/Format',
-	'./InitPage'
-], function (Controller, BindingMode, JSONModel, ChartFormatter, Format, InitPageUtil) {
+	'./InitPage',
+	"sap/viz/ui5/controls/Popover",
+	'sap/ui/core/HTML'
+], function (Controller, BindingMode, JSONModel, ChartFormatter, Format, InitPageUtil, Popover, HTMLControl) {
 	"use strict";
 
 	var Controller = Controller.extend("sap.viz.sample.Pie.Pie", {
-		
+
 		dataPath: "test-resources/sap/viz/demokit/dataset/milk_production_testing_data/revenue_cost_consume",
 		oVizFrame: null,
 
 		onInit: function (evt) {
 			var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame"),
 				dataModel = new JSONModel(this.dataPath + "/medium.json"),
-				oPopOver = this.getView().byId("idPopOver"),
+				oPopOver = this.oPopOver = new Popover(),
 				that = this;
-			
+
 			Format.numericFormatter(ChartFormatter.getInstance());
 			oVizFrame.setVizProperties({
 				legend: {
@@ -35,15 +37,37 @@ sap.ui.define([
 			oVizFrame.setModel(dataModel);
 
 			oPopOver.connect(oVizFrame.getVizUid());
-			oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
-
-			InitPageUtil.initPageSettings(this.getView());
 			
+			InitPageUtil.initPageSettings(this.getView());
+			oPopOver.setFormatString(ChartFormatter.DefaultPattern.SHORTFLOAT);
 			dataModel.attachRequestCompleted(function () {
 				that.dataSort(this.getData());
+				that.oPopOver.setCustomDataControl(function (data) {
+					if (data.data.val) {
+						var exData = this.getData().milk,
+							values = data.data.val,
+							divStr = "",
+							sStoreName = values[0].value,
+							oStore = exData.find((el) => {return (el["Store Name"] === sStoreName)}),
+							oFormatter = ChartFormatter.getInstance();	
+							
+						divStr = divStr + "<b style='margin-left:30px'>" + values[0].value + "</b>";
+						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>Revenue<span style = 'float: right'>" + oFormatter.format(values[1].value, that.oPopOver.getProperty("formatString")) +
+							"</span></div>";
+						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>" + "Cost<span style = 'float: right'>" +  oFormatter.format(oStore["Cost"], that.oPopOver.getProperty("formatString")) +
+							"</span></div>";
+						divStr = divStr + "<div style = 'margin: 5px 30px 15px 30px'>" + "Consumption<span style = 'float: right'>" + oFormatter.format(oStore["Consumption"], that.oPopOver.getProperty("formatString")) +
+							"</span></div>";
+						return new HTMLControl({
+							content: divStr
+						});
+					}
+				}.bind(this));
 			});
+			
+
 		},
-		
+
 		/**
 		 * Handler for Rudiobutton select event
 		 * Sets pie or donut VizType 
@@ -62,22 +86,22 @@ sap.ui.define([
 		handleStchChange: function () {
 			var oVizProperties,
 				bNeutral = this.getView().getModel().getProperty("/paletteTypes/neutralEnabled");
-				
+
 			switch (bNeutral) {
-				case true:
-					oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[1];
-					break;
-				case false:
-					oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[0];
+			case true:
+				oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[1];
 				break;
-			} 
+			case false:
+				oVizProperties = this.getView().getModel().getProperty("/paletteTypes/vizProperties")[0];
+				break;
+			}
 			this.oVizFrame.setVizProperties(oVizProperties);
 		},
-        /**
-         * Helper method to sort selected dataset by Revenue   
-         * @param {array} dataset 
-         * @public
-         */
+		/**
+		 * Helper method to sort selected dataset by Revenue   
+		 * @param {array} dataset 
+		 * @public
+		 */
 		dataSort: function (dataset) {
 			//let data sorted by revenue
 			if (dataset && dataset.hasOwnProperty("milk")) {
@@ -88,18 +112,18 @@ sap.ui.define([
 			}
 		},
 
-        /* sap.viz.sample.Pie sample's method*/		
+		/* sap.viz.sample.Pie sample's method*/
 		onAfterRendering: function () {
 			var oModel = this.getView().getModel(),
 				seriesRadioGroup = this.getView().byId('seriesRadioGroup'),
 				datasetRadioGroup = this.getView().byId('datasetRadioGroup'),
 				axisTitleSwitch = this.getView().byId('axisTitleSwitch');
-				
+
 			datasetRadioGroup.setSelectedIndex(oModel.getProperty("/dataset/defaultSelected"));
 			seriesRadioGroup.setSelectedIndex(oModel.getProperty("/series/defaultSelected"));
 			seriesRadioGroup.setEnabled(oModel.getProperty("/series/enabled"));
-			axisTitleSwitch.setEnabled(oModel.getProperty("/axisTitle/enabled")); 
-			
+			axisTitleSwitch.setEnabled(oModel.getProperty("/axisTitle/enabled"));
+
 		},
 		/**
 		 * Handler for Switch dataLabelSwitch change event
@@ -121,7 +145,7 @@ sap.ui.define([
 		 * Handler for RadioButton select event
 		 * Changes dataset for the chart
 		 * @public
-		 */		
+		 */
 		onDatasetSelected: function (oEvent) {
 			var datasetRadio = oEvent.getSource();
 			if (this.oVizFrame && datasetRadio.getSelected()) {
