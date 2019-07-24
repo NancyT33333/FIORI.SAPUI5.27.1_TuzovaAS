@@ -52,11 +52,11 @@ sap.ui.define([
 							oFormatter = ChartFormatter.getInstance();	
 							
 						divStr = divStr + "<b style='margin-left:30px'>" + values[0].value + "</b>";
-						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>Revenue<span style = 'float: right'>" + oFormatter.format(values[1].value, that.oPopOver.getProperty("formatString")) +
+						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>Revenue<span style = 'float: right'>" + oFormatter.format(values[1].value, that.oPopOver.getFormatString()) +
 							"</span></div>";
-						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>" + "Cost<span style = 'float: right'>" +  oFormatter.format(oStore["Cost"], that.oPopOver.getProperty("formatString")) +
+						divStr = divStr + "<div style = 'margin: 5px 30px 0 30px'>" + "Cost<span style = 'float: right'>" +  oFormatter.format(oStore["Cost"], that.oPopOver.getFormatString()) +
 							"</span></div>";
-						divStr = divStr + "<div style = 'margin: 5px 30px 15px 30px'>" + "Consumption<span style = 'float: right'>" + oFormatter.format(oStore["Consumption"], that.oPopOver.getProperty("formatString")) +
+						divStr = divStr + "<div style = 'margin: 5px 30px 15px 30px'>" + "Consumption<span style = 'float: right'>" + oFormatter.format(oStore["Consumption"], that.oPopOver.getFormatString()) +
 							"</span></div>";
 						return new HTMLControl({
 							content: divStr
