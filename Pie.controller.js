@@ -11,13 +11,13 @@ sap.ui.define([
 	"use strict";
 
 	var Controller = Controller.extend("sap.viz.sample.Pie.Pie", {
-
-		dataPath: "test-resources/sap/viz/demokit/dataset/milk_production_testing_data/revenue_cost_consume",
+		dataPath:"sap/viz/sample/Pie/test-sources",
+		// dataPath: "test-resources/sap/viz/demokit/dataset/milk_production_testing_data/revenue_cost_consume",
 		oVizFrame: null,
 
 		onInit: function (evt) {
 			var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame"),
-				dataModel = new JSONModel(this.dataPath + "/medium.json"),
+				dataModel = new JSONModel(sap.ui.require.toUrl(this.dataPath + "/medium.json")),
 				oPopOver = this.oPopOver = new Popover(),
 				that = this;
 
@@ -33,14 +33,15 @@ sap.ui.define([
 				}
 			});
 			// apply SemanticBad pallete rules
-			oVizFrame.setVizProperties(this.getView().getModel().getProperty("/paletteTypes/vizProperties")[1]);
-			oVizFrame.setModel(dataModel);
+			oVizFrame.setVizProperties(this.getOwnerComponent().getModel().getProperty("/paletteTypes/vizProperties")[1]);
+			
 
 			oPopOver.connect(oVizFrame.getVizUid());
 			
 			InitPageUtil.initPageSettings(this.getView());
 			oPopOver.setFormatString(ChartFormatter.DefaultPattern.SHORTFLOAT);
 			dataModel.attachRequestCompleted(function () {
+				that.oVizFrame.setModel(this);
 				that.dataSort(this.getData());
 				that.oPopOver.setCustomDataControl(function (data) {
 					if (data.data.val) {
@@ -150,7 +151,7 @@ sap.ui.define([
 			var datasetRadio = oEvent.getSource();
 			if (this.oVizFrame && datasetRadio.getSelected()) {
 				var bindValue = datasetRadio.getBindingContext().getObject(),
-					dataModel = new JSONModel(this.dataPath + bindValue.value),
+					dataModel = new JSONModel(sap.ui.require.toUrl(this.dataPath + bindValue.value)),
 					that = this;
 				this.oVizFrame.setModel(dataModel);
 				this.oVizFrame.getModel().attachRequestCompleted(function () {

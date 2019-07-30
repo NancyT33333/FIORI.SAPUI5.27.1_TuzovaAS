@@ -8,8 +8,8 @@
 	"sap.ui5": {
 		"models": {
 			"": {
-			
-				"uri": "/settings.json",
+
+				"uri": "settings.json",
 				"type": "sap.ui.model.json.JSONModel"
 			},
 			"i18n": {
@@ -26,10 +26,11 @@
 		},
 		"resources": {
 			"css": [{
-				"uri": "/exploredStyle.css"
+				"uri": "exploredStyle.css"
 			}]
 		},
 		"dependencies": {
+			"minUI5Version": "1.48.0",
 			"libs": {
 				"sap.viz": {},
 				"sap.ui.layout": {},
